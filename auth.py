@@ -33,3 +33,8 @@ def fetch_access_token():
   except:
     print(traceback.format_exc())
 
+def fetch_auth_header():
+  if is_access_token_expired():
+    fetch_access_token()
+  return 'Bearer {}'.format(access_token)
+
