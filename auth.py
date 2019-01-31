@@ -1,4 +1,4 @@
-import datetime
+from datetime import datetime, timedelta
 import os
 import requests
 import traceback
@@ -13,8 +13,8 @@ def is_access_token_expired():
   if access_token is None or expiration_date is None:
     return True
   # 1 second expiration buffer
-  earlier_exp_date = expiration_date + datetime.timedelta(0, -1)
-  return datetime.datetime.now() > earlier_exp_date 
+  earlier_exp_date = expiration_date + timedelta(0, -1)
+  return datetime.now() > earlier_exp_date 
 
 def fetch_access_token():
   basic_token = os.environ['TOKEN']
@@ -29,7 +29,7 @@ def fetch_access_token():
     res = rq.json()
     access_token = res.get('access_token')
     expires_in = res.get('expires_in') 
-    expiration_date = datetime.datetime.now() + datetime.timedelta(0, expires_in)
+    expiration_date = datetime.now() + timedelta(0, expires_in)
   except:
     print(traceback.format_exc())
 
