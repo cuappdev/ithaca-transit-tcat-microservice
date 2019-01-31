@@ -3,7 +3,7 @@ import os
 import requests
 import traceback
 
-token_url = 'https://gateway.api.cloud.wso2.com:443/token'
+TOKEN_URL = 'https://gateway.api.cloud.wso2.com:443/token'
 
 access_token = None
 expiration_date = None
@@ -22,10 +22,13 @@ def fetch_access_token():
       'Cache-Control': 'no-cache',
       'Authorization': 'Basic {}'.format(basic_token)
   }
-  data = {'grant_type': 'client_credentials'}
   global access_token, expiration_date
   try:
-    rq = requests.post(token_url, headers=headers, data=data)
+    rq = requests.post(
+        TOKEN_URL, 
+        headers=headers, 
+        data={'grant_type': 'client_credentials'}
+    )
     res = rq.json()
     access_token = res.get('access_token')
     expires_in = res.get('expires_in') 
@@ -37,4 +40,3 @@ def fetch_auth_header():
   if is_access_token_expired():
     fetch_access_token()
   return 'Bearer {}'.format(access_token)
-

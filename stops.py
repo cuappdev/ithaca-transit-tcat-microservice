@@ -4,12 +4,12 @@ import traceback
 from auth import fetch_auth_header
 import requests
 
-HOUR_IN_SEC = 60 * 60
-stops_url = 'https://gateway.api.cloud.wso2.com:443/t/mystop/tcat/v1/rest/Stops/GetAllStops'
+ONE_HOUR_IN_SEC = 60 * 60
+STOPS_URL = 'https://gateway.api.cloud.wso2.com:443/t/mystop/tcat/v1/rest/Stops/GetAllStops'
 
 stops_data = None
 
-def fetch_stops(stop):
+def fetch_stops(event):
   global stops_data 
   try:
     auth_header = fetch_auth_header() 
@@ -17,7 +17,7 @@ def fetch_stops(stop):
         'Cache-Control': 'no-cache',
         'Authorization': auth_header
     }
-    rq = requests.get(stops_url, headers=headers)
+    rq = requests.get(STOPS_URL, headers=headers)
     stops_data = [] 
     for stop_dict in rq.json():
       stop = {
@@ -28,7 +28,7 @@ def fetch_stops(stop):
       stops_data.append(stop)
   except:
     print(traceback.format_exc())
+  threading.Timer(ONE_HOUR_IN_SEC, fetch_stops, [event]).start()
 
-  if not stop.is_set():
-    threading.Timer(HOUR_IN_SEC, fetch_stops, [stop]).start()
-
+def get_stops_data():
+  return stops_data
