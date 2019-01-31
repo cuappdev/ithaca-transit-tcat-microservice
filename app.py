@@ -13,16 +13,15 @@ URL = 'https://realtimetcatbus.availtec.com/InfoPoint/GTFS-Realtime.ashx?&Type=T
 data = None
 
 def parse_xml_to_json(xml):
-    namespaces = {'Header': None}
-    ret = xmltodict.parse(xml, process_namespaces=True, namespaces=namespaces).popitem()
+    ret = xmltodict.parse(xml).popitem()[1]
 
-    entities = ret[1].popitem()[1].popitem()
+    entities = ret['Entities'].popitem()[1]
     entity_dict = {}
 
-    timestamp = ret[1]['Header']['Timestamp']
+    timestamp = ret['Header']['Timestamp']
     entity_dict['Timestamp'] = timestamp
 
-    for entity in entities[1]:
+    for entity in entities:
         entity_id = entity['Id']
         trip_update = entity['TripUpdate']
 
@@ -40,12 +39,10 @@ def parse_xml_to_json(xml):
             if isinstance(stop_time_updates, type([])):
                 for stop_update in stop_time_updates:
                     stop_id = stop_update['StopId']
-                    departure_delay = stop_update['Departure']['Delay']
-                    stop_updates[stop_id] = departure_delay
+                    stop_updates[stop_id] = stop_update['Arrival']['Delay']
             else:
                 stop_id = stop_time_updates['StopId']
-                departure_delay = stop_time_updates['Departure']['Delay']
-                stop_updates[stop_id] = departure_delay
+                stop_updates[stop_id] = stop_time_updates['Arrival']['Delay']
 
         entity_dict[entity_id] = {
             'delay': delay,
