@@ -1,0 +1,9 @@
+version: "3.4"
+
+services: 
+  live-tracking:
+   build: .
+   env_file: python.env
+   ports:
+     - "5000:5000"
+   

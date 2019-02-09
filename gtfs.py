@@ -1,8 +1,6 @@
 import csv
-import os
 from subprocess import PIPE, Popen, STDOUT
 import threading
-import traceback
 import zipfile
 
 GTFS_URL = 'https://s3.amazonaws.com/tcat-gtfs/tcat-ny-us.zip'
@@ -22,7 +20,7 @@ def extract_gtfs():
   with open(f'{TCAT_NY_US}/routes.txt') as csv_file:
     csv_reader = csv.reader(csv_file, delimiter=',')
     column_names = next(csv_reader)
-    for index, row in enumerate(csv_reader):
+    for row in csv_reader:
       route = {}
       for index, column in enumerate(column_names):
         route[column] = row[index]
