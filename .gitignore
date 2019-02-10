@@ -3,6 +3,9 @@ __pycache__/
 *.py[cod]
 *$py.class
 
+# Data
+tcat-ny-us/
+
 # Distribution / packaging
 .Python
 build/
@@ -19,5 +22,8 @@ wheels/
 MANIFEST
 
 # Environments
-.env
+*.env
 venv/
+
+# Zip
+*.zip
