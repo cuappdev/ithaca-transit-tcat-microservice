@@ -4,10 +4,10 @@ import os
 
 from flask import Flask, jsonify
 
-from alerts import get_alerts_data, fetch_alerts
-from gtfs import get_gtfs_data, fetch_gtfs
-from live_tracking import get_rtf_data, fetch_rtf
-from stops import get_stops_data, fetch_stops
+from src.alerts import get_alerts_data, fetch_alerts
+from src.gtfs import get_gtfs_data, fetch_gtfs
+from src.live_tracking import get_rtf_data, fetch_rtf
+from src.stops import get_stops_data, fetch_stops
 
 app = Flask(__name__)
 
