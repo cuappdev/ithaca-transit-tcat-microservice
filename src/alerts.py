@@ -4,7 +4,7 @@ import traceback
 
 import requests
 
-from auth import fetch_auth_header
+from src.auth import fetch_auth_header
 
 ALERTS_URL = 'https://gateway.api.cloud.wso2.com:443/t/mystop/tcat/v1/rest/PublicMessages/GetAllMessages'
 ONE_MIN_IN_SEC = 60

@@ -1,7 +1,7 @@
 import threading
 import traceback
 
-from auth import fetch_auth_header
+from src.auth import fetch_auth_header
 import requests
 
 ONE_HOUR_IN_SEC = 60 * 60
