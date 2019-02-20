@@ -6,6 +6,7 @@ import requests
 
 ONE_HOUR_IN_SEC = 60 * 60
 STOPS_URL = 'https://gateway.api.cloud.wso2.com:443/t/mystop/tcat/v1/rest/Stops/GetAllStops'
+BUS_STOP = 'busStop'
 
 stops_data = None
 
@@ -23,7 +24,8 @@ def fetch_stops(event):
       stop = {
           'name': stop_dict.get('Name'),
           'lat': stop_dict.get('Latitude'),
-          'long': stop_dict.get('Longitude')
+          'long': stop_dict.get('Longitude'),
+          'type': BUS_STOP
       }
       stops_data.append(stop)
   except:
