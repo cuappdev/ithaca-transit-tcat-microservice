@@ -56,7 +56,7 @@ def fetch_rtf(event):
     rtf_data = parse_xml_to_json(rq.text)
   except:
     print(traceback.format_exc())
-  threading.Timer(1, fetch_rtf, [event]).start()
+  threading.Timer(5, fetch_rtf, [event]).start()
 
 def get_rtf_data():
   return rtf_data
