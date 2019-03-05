@@ -52,11 +52,11 @@ def parse_xml_to_json(xml):
 def fetch_rtf(event):
   global rtf_data
   try:
-    rq = requests.get(RTF_URL, headers={'Cache-Control': 'no-cache'})
+    rq = requests.get(RTF_URL, headers={'Cache-Control': 'no-cache'}, timeout=3)
     rtf_data = parse_xml_to_json(rq.text)
   except:
     print(traceback.format_exc())
-  threading.Timer(5, fetch_rtf, [event]).start()
+  threading.Timer(30, fetch_rtf, [event]).start()
 
 def get_rtf_data():
   return rtf_data
