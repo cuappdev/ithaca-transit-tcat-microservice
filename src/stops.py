@@ -11,15 +11,15 @@ BUS_STOP = 'busStop'
 stops_data = None
 
 def fetch_stops(event):
-  global stops_data 
+  global stops_data
   try:
-    auth_header = fetch_auth_header() 
+    auth_header = fetch_auth_header()
     headers = {
         'Cache-Control': 'no-cache',
         'Authorization': auth_header
     }
     rq = requests.get(STOPS_URL, headers=headers)
-    stops_data = [] 
+    stops_data = []
     for stop_dict in rq.json():
       stop = {
           'name': stop_dict.get('Name'),

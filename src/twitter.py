@@ -23,12 +23,12 @@ class TwitterAPI:
     """Create a string status from an alert's message and start and end dates."""
     from_date = self.convert_str_to_date(alert['fromDate'])
     to_date = self.convert_str_to_date(alert['toDate'])
-    from_date_str = f"{month_abbr[from_date.month]} {from_date.day}"
+    from_date_str = f'{month_abbr[from_date.month]} {from_date.day}'
     if from_date == to_date:
-      effective_str = f"Effective: {from_date_str}"
+      effective_str = f'Effective: {from_date_str}'
     else:
-      to_date_str = f"{month_abbr[to_date.month]} {to_date.day}"
-      effective_str = f"Effective: {from_date_str} - {to_date_str}"
+      to_date_str = f'{month_abbr[to_date.month]} {to_date.day}'
+      effective_str = f'Effective: {from_date_str} - {to_date_str}'
     return f"{alert['message']}\n{effective_str}"
 
   def get_statuses(self, count):

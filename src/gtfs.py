@@ -27,7 +27,7 @@ def extract_gtfs():
       gtfs_data.append(route)
 
 def gtfs_fetched():
-  cmd = "wget -N " + GTFS_URL
+  cmd = f'wget -N {GTFS_URL}'
   process = Popen(cmd, shell=True, stdin=PIPE, stdout=PIPE, stderr=STDOUT, close_fds=True)
   output = process.stdout.read().decode('utf-8')
   return '200 OK' in output
