@@ -4,10 +4,10 @@ import os
 
 from flask import Flask, jsonify
 
-from src.alerts import get_alerts_data, fetch_alerts
-from src.gtfs import get_gtfs_data, fetch_gtfs
-from src.live_tracking import get_rtf_data, fetch_rtf
-from src.stops import get_stops_data, fetch_stops
+from src.alerts import fetch_alerts, get_alerts_data
+from src.gtfs import fetch_gtfs, get_gtfs_data, get_gtfs_date_updated
+from src.live_tracking import fetch_rtf, get_rtf_data
+from src.stops import fetch_stops, get_stops_data
 
 app = Flask(__name__)
 
@@ -27,6 +27,12 @@ def get_rtf():
 @app.route('/stops')
 def get_all_stops():
   return jsonify(get_stops_data())
+
+@app.route('/gtfs-date')
+def get_gtfs_date():
+  if get_gtfs_date_updated():
+    return jsonify(get_gtfs_date_updated())
+  return jsonify('Unknown when GTFS was last updated')
 
 if __name__ == '__main__':
   alerts_event, gtfs_event, rtf_event, stops_event = [threading.Event() for i in range(4)]

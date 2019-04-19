@@ -1,5 +1,6 @@
 import csv
 from subprocess import PIPE, Popen, STDOUT
+import datetime
 import threading
 import zipfile
 
@@ -8,6 +9,7 @@ TCAT_NY_US = 'tcat-ny-us'
 TEN_SECONDS = 10
 
 gtfs_data = []
+date_updated = None
 
 def fetch_gtfs(event):
   if gtfs_fetched():
@@ -33,9 +35,14 @@ def gtfs_fetched():
   return '200 OK' in output
 
 def unzip_gtfs():
+  global date_updated
   zip_ref = zipfile.ZipFile(f'{TCAT_NY_US}.zip', 'r')
   zip_ref.extractall(TCAT_NY_US)
+  date_updated = datetime.datetime.now()
   zip_ref.close()
+
+def get_gtfs_date_updated():
+  return date_updated
 
 def get_gtfs_data():
   return gtfs_data
