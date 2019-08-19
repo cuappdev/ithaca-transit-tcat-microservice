@@ -4,7 +4,6 @@ import datetime
 import threading
 import zipfile
 
-GTFS_URL = 'https://s3.amazonaws.com/tcat-gtfs/tcat-ny-us.zip'
 TCAT_NY_US = 'tcat-ny-us'
 TEN_SECONDS = 10
 
@@ -12,10 +11,7 @@ gtfs_data = []
 date_updated = None
 
 def fetch_gtfs(event):
-  if gtfs_fetched():
-    unzip_gtfs()
-    extract_gtfs()
-  threading.Timer(TEN_SECONDS, fetch_gtfs, [event]).start()
+  extract_gtfs()
 
 def extract_gtfs():
   global gtfs_data
@@ -27,19 +23,6 @@ def extract_gtfs():
       for index, column in enumerate(column_names):
         route[column] = row[index]
       gtfs_data.append(route)
-
-def gtfs_fetched():
-  cmd = f'wget -N {GTFS_URL}'
-  process = Popen(cmd, shell=True, stdin=PIPE, stdout=PIPE, stderr=STDOUT, close_fds=True)
-  output = process.stdout.read().decode('utf-8')
-  return '200 OK' in output
-
-def unzip_gtfs():
-  global date_updated
-  zip_ref = zipfile.ZipFile(f'{TCAT_NY_US}.zip', 'r')
-  zip_ref.extractall(TCAT_NY_US)
-  date_updated = datetime.datetime.now()
-  zip_ref.close()
 
 def get_gtfs_date_updated():
   return date_updated
