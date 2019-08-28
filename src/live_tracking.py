@@ -34,9 +34,11 @@ def parse_xml_to_json(xml):
 
       if isinstance(stop_time_updates, type([])):
           for stop_update in stop_time_updates:
+              if stop_update['schedule_relationship'] == 'NoData':
+                  continue
               stop_id = stop_update['StopId']
               stop_updates[stop_id] = stop_update['Arrival']['Delay']
-      else:
+      elif stop_time_updates['schedule_relationship'] != 'NoData':
           stop_id = stop_time_updates['StopId']
           stop_updates[stop_id] = stop_time_updates['Arrival']['Delay']
 
