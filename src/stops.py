@@ -7,9 +7,15 @@ from src.auth import fetch_auth_header
 import geopy.distance
 import requests
 
-ONE_HOUR_IN_SEC = 60 * 60
 BUS_STOP = 'busStop'
+COLLEGETOWN_STOP = {  # Creating "fake" bus stop to remove Google Places central Collegetown location choice
+  'name': 'Collegetown',
+  'lat': 42.442558,
+  'long': -76.485336,
+  'type': BUS_STOP
+}
 MIN_DIST_BETWEEN_STOPS = 160.0  # Measured in meters
+ONE_HOUR_IN_SEC = 60 * 60
 STOPS_URL = 'https://gateway.api.cloud.wso2.com:443/t/mystop/tcat/v1/rest/Stops/GetAllStops'
 
 stops_data = None
@@ -32,6 +38,7 @@ def fetch_stops(event):
           'type': BUS_STOP
       }
       stops.append(stop)
+    stops.append(COLLEGETOWN_STOP)
     stops_data = filter_stops(stops)
   except:
     print(traceback.format_exc())
