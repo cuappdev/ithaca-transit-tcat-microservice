@@ -33,6 +33,8 @@ To run the app, just do:
 ```
 python app.py
 ```
+# Style
+So that the repository agrees upon a style standard, we have opted to use [black](https://github.com/psf/black) for Python formatting!
 
 # Endpoints
 

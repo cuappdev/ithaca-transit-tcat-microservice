@@ -1,5 +1,8 @@
 aniso8601==4.0.1
+appdirs==1.4.3
+attrs==19.1.0
 beautifulsoup4==4.6.3
+black==19.3b0
 bs4==0.0.1
 certifi==2018.10.15
 chardet==3.0.4
@@ -23,6 +26,7 @@ requests==2.22.0
 requests-oauthlib==1.2.0
 Rx==1.6.1
 six==1.11.0
+toml==0.10.0
 tweepy==3.7.0
 typing==3.6.6
 urllib3==1.25.3
