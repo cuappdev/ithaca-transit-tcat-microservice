@@ -22,7 +22,7 @@ wheels/
 MANIFEST
 
 # Environments
-*.env
+*.envrc
 venv/
 
 # Zip
