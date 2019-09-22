@@ -13,12 +13,8 @@ class TwitterAPI:
     TWITTER_SCREEN_NAME = "IthacaTransit"
 
     def __init__(self):
-        auth = tweepy.OAuthHandler(
-            os.environ["TWITTER_KEY"], os.environ["TWITTER_KEY_SECRET"]
-        )
-        auth.set_access_token(
-            os.environ["TWITTER_TOKEN"], os.environ["TWITTER_TOKEN_SECRET"]
-        )
+        auth = tweepy.OAuthHandler(os.environ["TWITTER_KEY"], os.environ["TWITTER_KEY_SECRET"])
+        auth.set_access_token(os.environ["TWITTER_TOKEN"], os.environ["TWITTER_TOKEN_SECRET"])
         self.api = tweepy.API(auth)
 
     def convert_str_to_date(self, date_str):
@@ -42,9 +38,7 @@ class TwitterAPI:
         status_objects = self.api.user_timeline(
             screen_name=self.TWITTER_SCREEN_NAME, count=count, tweet_mode="extended"
         )
-        return [
-            html.unescape(s.full_text.split("\nEffective: ")[0]) for s in status_objects
-        ]
+        return [html.unescape(s.full_text.split("\nEffective: ")[0]) for s in status_objects]
 
     def get_new_alerts(self, alerts):
         """Filter the array of alerts by removing already tweeted alert messages"""

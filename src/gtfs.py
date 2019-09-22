@@ -1,8 +1,9 @@
 import csv
-from subprocess import PIPE, Popen, STDOUT
-import datetime
-import threading
-import zipfile
+
+# from subprocess import PIPE, Popen, STDOUT
+# import datetime
+# import threading
+# import zipfile
 
 TCAT_NY_US = "tcat-ny-us"
 TEN_SECONDS = 10

@@ -16,9 +16,7 @@ COLLEGETOWN_STOP = {  # Creating "fake" bus stop to remove Google Places central
 }
 MIN_DIST_BETWEEN_STOPS = 160.0  # Measured in meters
 ONE_HOUR_IN_SEC = 60 * 60
-STOPS_URL = (
-    "https://gateway.api.cloud.wso2.com:443/t/mystop/tcat/v1/rest/Stops/GetAllStops"
-)
+STOPS_URL = "https://gateway.api.cloud.wso2.com:443/t/mystop/tcat/v1/rest/Stops/GetAllStops"
 
 stops_data = None
 
@@ -52,14 +50,8 @@ def filter_stops(stops):
         stop_names_to_info[stop["name"]].append(stop)
 
     # Get all stops with and without duplicate names
-    non_duplicate_stops = [
-        stops_info[0]
-        for stops_info in stop_names_to_info.values()
-        if len(stops_info) == 1
-    ]
-    duplicate_stops = [
-        stops_info for stops_info in stop_names_to_info.values() if len(stops_info) > 1
-    ]
+    non_duplicate_stops = [stops_info[0] for stops_info in stop_names_to_info.values() if len(stops_info) == 1]
+    duplicate_stops = [stops_info for stops_info in stop_names_to_info.values() if len(stops_info) > 1]
 
     # Go through the stops with duplicate names
     for bus_stops in duplicate_stops:
@@ -72,12 +64,7 @@ def filter_stops(stops):
         # If stops are too close to each other, combine into a new stop with averaged location
         if distance < MIN_DIST_BETWEEN_STOPS:
             middle_lat, middle_long = get_middle_coordinate(first_coords, last_coords)
-            middle_stop = {
-                "name": first_stop["name"],
-                "lat": middle_lat,
-                "long": middle_long,
-                "type": BUS_STOP,
-            }
+            middle_stop = {"name": first_stop["name"], "lat": middle_lat, "long": middle_long, "type": BUS_STOP}
             non_duplicate_stops.append(middle_stop)
         else:  # Otherwise, add directly to list of stops
             non_duplicate_stops.append(first_stop)
@@ -98,10 +85,7 @@ def get_middle_coordinate(coord_a, coord_b):
     x = math.cos(b_lat) * math.cos(long_diff)
     y = math.cos(b_lat) * math.sin(long_diff)
 
-    middle_lat = math.atan2(
-        math.sin(a_lat) + math.sin(b_lat),
-        math.sqrt((math.cos(a_lat) + x) ** 2 + y ** 2),
-    )
+    middle_lat = math.atan2(math.sin(a_lat) + math.sin(b_lat), math.sqrt((math.cos(a_lat) + x) ** 2 + y ** 2))
     middle_long = a_long + math.atan2(y, math.cos(a_lat) + x)
 
     return math.degrees(middle_lat), math.degrees(middle_long)
