@@ -19,9 +19,9 @@ source venv/bin/activate
 pip install -r requirements.txt
 ```
 
-Make sure to also create your `.env` file by running:
+Make sure to also create your `.envrc` file by running:
 ```
-cp env.template .env
+cp envrc.template .envrc
 ```
 
 Environment variable values can be found by asking a member of Cornell AppDev.
@@ -35,6 +35,18 @@ python app.py
 ```
 # Style
 So that the repository agrees upon a style standard, we have opted to use [black](https://github.com/psf/black) for Python formatting!
+
+## Setting up linter
+**Flake 8**: Install [flake8](http://flake8.pycqa.org/en/latest/)
+
+**Black**: Either use [command line tool](https://black.readthedocs.io/en/stable/installation_and_usage.html) or use [editor extension](https://black.readthedocs.io/en/stable/editor_integration.html). 
+
+If using VS Code, install the 'Python' extension and include following snippet inside `settings.json`:
+```  json
+"python.linting.pylintEnabled": false,
+"python.linting.flake8Enabled": true,
+"python.formatting.provider": "black"
+ ```
 
 # Endpoints
 
