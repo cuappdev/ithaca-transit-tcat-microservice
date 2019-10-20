@@ -1,15 +1,10 @@
 import csv
 
-# from subprocess import PIPE, Popen, STDOUT
-# import datetime
-# import threading
-# import zipfile
-
 TCAT_NY_US = "tcat-ny-us"
 TEN_SECONDS = 10
 
 gtfs_data = []
-date_updated = None
+gtfs_feed_info = {}
 
 
 def fetch_gtfs(event):
@@ -28,8 +23,16 @@ def extract_gtfs():
             gtfs_data.append(route)
 
 
-def get_gtfs_date_updated():
-    return date_updated
+def get_gtfs_feed_info():
+    global gtfs_feed_info
+    with open(f"{TCAT_NY_US}/feed_info.txt") as csv_file:
+        csv_reader = csv.reader(csv_file, delimiter=",")
+        column_names = next(csv_reader)
+        for row in csv_reader:
+            for index, column in enumerate(column_names):
+                if column in {"feed_start_date", "feed_end_date", "feed_version"}:
+                    gtfs_feed_info[column] = row[index]
+    return gtfs_feed_info
 
 
 def get_gtfs_data():
