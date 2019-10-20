@@ -20,7 +20,7 @@ def extract_gtfs():
             route = {}
             for index, column in enumerate(column_names):
                 route[column] = row[index]
-                gtfs_data.append(route)
+            gtfs_data.append(route)
 
 
 def get_gtfs_feed_info():
@@ -30,7 +30,7 @@ def get_gtfs_feed_info():
         column_names = next(csv_reader)
         for row in csv_reader:
             for index, column in enumerate(column_names):
-                if column in ["feed_start_date", "feed_end_date", "feed_version"]:
+                if column in {"feed_start_date", "feed_end_date", "feed_version"}:
                     gtfs_feed_info[column] = row[index]
     return gtfs_feed_info
 
