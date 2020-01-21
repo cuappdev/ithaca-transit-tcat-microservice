@@ -1,8 +1,8 @@
 import threading
 import traceback
 
+import json
 import requests
-import xmltodict
 
 RTF_URL = "https://realtimetcatbus.availtec.com/InfoPoint/GTFS-Realtime.ashx?&Type=TripUpdate&debug=true"
 
@@ -10,9 +10,10 @@ rtf_data = None
 
 
 def parse_xml_to_json(xml):
-    ret = xmltodict.parse(xml).popitem()[1]
+    ret = json.loads(xml)
 
-    entities = ret["Entities"].popitem()[1]
+    entities = ret["Entities"]
+
     entity_dict = {}
 
     timestamp = ret["Header"]["Timestamp"]
@@ -23,14 +24,13 @@ def parse_xml_to_json(xml):
         trip_update = entity["TripUpdate"]
 
         vehicle_id = None
-        if "Vehicle" in trip_update:
+        if "Vehicle" in trip_update and trip_update["Vehicle"]:
             vehicle_id = trip_update["Vehicle"]["Id"]
 
         route_id = trip_update["Trip"]["RouteId"]
-        delay = trip_update["Delay"]
 
         stop_updates = {}
-        for k in trip_update["StopTimeUpdates"]:
+        for k in range(len(trip_update["StopTimeUpdates"])):
             stop_time_updates = trip_update["StopTimeUpdates"][k]
 
             if isinstance(stop_time_updates, type([])):
@@ -39,16 +39,11 @@ def parse_xml_to_json(xml):
                         continue
                     stop_id = stop_update["StopId"]
                     stop_updates[stop_id] = stop_update["Arrival"]["Delay"]
-            elif stop_time_updates["schedule_relationship"] != "NoData":
+            elif stop_time_updates["schedule_relationship"] != "NoData" and stop_time_updates["Arrival"]:
                 stop_id = stop_time_updates["StopId"]
                 stop_updates[stop_id] = stop_time_updates["Arrival"]["Delay"]
 
-        entity_dict[entity_id] = {
-            "delay": delay,
-            "routeId": route_id,
-            "stopUpdates": stop_updates,
-            "vehicleId": vehicle_id,
-        }
+        entity_dict[entity_id] = {"routeId": route_id, "stopUpdates": stop_updates, "vehicleId": vehicle_id}
     return entity_dict
 
 
