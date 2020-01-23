@@ -9,8 +9,8 @@ RTF_URL = "https://realtimetcatbus.availtec.com/InfoPoint/GTFS-Realtime.ashx?&Ty
 rtf_data = None
 
 
-def parse_xml_to_json(xml):
-    ret = json.loads(xml)
+def parse_json(json_rtf):
+    ret = json.loads(json_rtf)
 
     entities = ret["Entities"]
 
@@ -24,15 +24,14 @@ def parse_xml_to_json(xml):
         trip_update = entity["TripUpdate"]
 
         vehicle_id = None
-        if "Vehicle" in trip_update and trip_update["Vehicle"]:
+        if trip_update.get("Vehicle"):
             vehicle_id = trip_update["Vehicle"]["Id"]
 
         route_id = trip_update["Trip"]["RouteId"]
 
         stop_updates = {}
-        for k in range(len(trip_update["StopTimeUpdates"])):
-            stop_time_updates = trip_update["StopTimeUpdates"][k]
 
+        for stop_time_updates in trip_update["StopTimeUpdates"]:
             if isinstance(stop_time_updates, type([])):
                 for stop_update in stop_time_updates:
                     if stop_update["schedule_relationship"] == "NoData":
@@ -51,7 +50,7 @@ def fetch_rtf(event):
     global rtf_data
     try:
         rq = requests.get(RTF_URL, headers={"Cache-Control": "no-cache"}, timeout=3)
-        rtf_data = parse_xml_to_json(rq.text)
+        rtf_data = parse_json(rq.text)
     except:
         print(traceback.format_exc())
     threading.Timer(30, fetch_rtf, [event]).start()
