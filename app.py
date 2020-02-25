@@ -1,6 +1,5 @@
 import threading
 import time
-import os
 
 from flask import Flask, jsonify
 
@@ -11,38 +10,44 @@ from src.stops import fetch_stops, get_stops_data
 
 app = Flask(__name__)
 
-@app.route('/alerts')
+
+@app.route("/alerts")
 def get_alerts():
-  return jsonify(get_alerts_data())
+    return jsonify(get_alerts_data())
 
-@app.route('/gtfs')
+
+@app.route("/gtfs")
 def get_gtfs():
-  return jsonify(get_gtfs_data())
+    return jsonify(get_gtfs_data())
 
-@app.route('/')
-@app.route('/rtf')
+
+@app.route("/")
+@app.route("/rtf")
 def get_rtf():
-  return jsonify(get_rtf_data())
+    return jsonify(get_rtf_data())
 
-@app.route('/stops')
+
+@app.route("/stops")
 def get_all_stops():
-  return jsonify(get_stops_data())
+    return jsonify(get_stops_data())
 
-@app.route('/gtfs-feed-info')
+
+@app.route("/gtfs-feed-info")
 def get_gtfs_date():
-  return jsonify(get_gtfs_feed_info())
+    return jsonify(get_gtfs_feed_info())
 
-if __name__ == '__main__':
-  alerts_event, gtfs_event, rtf_event, stops_event = [threading.Event() for i in range(4)]
-  fetch_alerts(alerts_event)
-  fetch_gtfs(gtfs_event)
-  fetch_rtf(rtf_event)
-  fetch_stops(stops_event)
-  time.sleep(1)
-  app.run(host='0.0.0.0', port=5000)
-elif __name__ == 'app':
-  alerts_event, gtfs_event, rtf_event, stops_event = [threading.Event() for i in range(4)]
-  fetch_alerts(alerts_event)
-  fetch_gtfs(gtfs_event)
-  fetch_rtf(rtf_event)
-  fetch_stops(stops_event)
+
+if __name__ == "__main__":
+    alerts_event, gtfs_event, rtf_event, stops_event = [threading.Event() for i in range(4)]
+    fetch_alerts(alerts_event)
+    fetch_gtfs(gtfs_event)
+    fetch_rtf(rtf_event)
+    fetch_stops(stops_event)
+    time.sleep(1)
+    app.run(host="0.0.0.0", port=5000)
+elif __name__ == "app":
+    alerts_event, gtfs_event, rtf_event, stops_event = [threading.Event() for i in range(4)]
+    fetch_alerts(alerts_event)
+    fetch_gtfs(gtfs_event)
+    fetch_rtf(rtf_event)
+    fetch_stops(stops_event)
