@@ -13,6 +13,7 @@ def parse_protobuf(rq):
     entity_dict = {}
     feed = gtfs_realtime_pb2.FeedMessage()
     feed.ParseFromString(rq.read())
+    vehicle_id = None
     for entity in feed.entity:
         if entity.HasField("trip_update"):
             if entity.trip_update.HasField("vehicle"):
