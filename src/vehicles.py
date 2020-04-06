@@ -28,7 +28,7 @@ def parse_protobuf(rq):
                 speed = entity.vehicle.position.speed
         entity_dict[vehicle_id] = {
             "bearing": bearing,
-            "congestion_level": congestion_level,
+            "congestionLevel": congestion_level,
             "latitude": latitude,
             "longitude": longitude,
             "routeID": route_id,
