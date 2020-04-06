@@ -5,7 +5,7 @@ sudo: required
 services:
 - docker
 script:
-- 
+- echo
 deploy:
   provider: script
   script: bash docker_push
