@@ -49,4 +49,7 @@ class TwitterAPI:
         """Makes a request to post tweets with the given alerts"""
         for alert in self.get_new_alerts(alerts):
             status = self.format_alert_status(alert)
-            self.api.update_status(status=status)
+            try:
+                self.api.update_status(status=status)
+            except tweepy.error.TweepError:
+                continue
