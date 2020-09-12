@@ -16,8 +16,12 @@ def parse_protobuf(rq):
     for entity in feed.entity:
         vehicle_id = entity.id
         if entity.HasField("vehicle"):
+            current_status = entity.vehicle.current_status
+            current_stop_sequence = entity.vehicle.current_stop_sequence
+            stop_id = entity.vehicle.stop_id
             timestamp = entity.vehicle.timestamp
             congestion_level = entity.vehicle.congestion_level
+            occupancy_status = entity.vehicle.occupancy_status
             if entity.vehicle.HasField("trip"):
                 trip_id = entity.vehicle.trip.trip_id
                 route_id = entity.vehicle.trip.route_id
@@ -27,15 +31,19 @@ def parse_protobuf(rq):
                 bearing = entity.vehicle.position.bearing
                 speed = entity.vehicle.position.speed
         entity_dict[vehicle_id] = {
-            "vehicleID": vehicle_id,
             "bearing": bearing,
             "congestionLevel": congestion_level,
+            "currentStatus": current_status,
+            "currentStopSequence": current_stop_sequence,
             "latitude": latitude,
             "longitude": longitude,
+            "occupancy_status": occupancy_status,
             "routeID": route_id,
             "speed": speed,
+            "stopID": stop_id,
             "timestamp": timestamp,
             "tripID": trip_id,
+            "vehicleID": vehicle_id,
         }
     return entity_dict
 
