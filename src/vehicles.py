@@ -37,7 +37,7 @@ def parse_protobuf(rq):
             "currentStopSequence": current_stop_sequence,
             "latitude": latitude,
             "longitude": longitude,
-            "occupancy_status": occupancy_status,
+            "occupancyStatus": occupancy_status,
             "routeID": route_id,
             "speed": speed,
             "stopID": stop_id,
