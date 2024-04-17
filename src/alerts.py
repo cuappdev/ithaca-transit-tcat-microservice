@@ -5,14 +5,14 @@ import traceback
 import requests
 
 from src.auth import fetch_auth_header
-from src.twitter import TwitterAPI
 
-ALERTS_URL = "https://gateway.api.cloud.wso2.com:443/t/mystop/tcat/v1/rest/PublicMessages/GetAllMessages"
+
+ALERTS_URL = "https://realtimetcatbus.availtec.com/InfoPoint/rest/PublicMessages/GetAllMessages"
 DATE_STRING_FORMAT = "%Y-%m-%dT%H:%M:%S.%fZ"
 ONE_MIN_IN_SEC = 60
 
 alerts_data = None
-twitter_api = TwitterAPI()
+
 
 
 def format_date(date_str):
@@ -41,9 +41,7 @@ def convert_num_to_str(tcat_num):
 def fetch_alerts(event):
     global alerts_data
     try:
-        auth_header = fetch_auth_header()
-        headers = {"Authorization": auth_header, "Cache-Control": "no-cache"}
-        rq = requests.get(ALERTS_URL, headers=headers)
+        rq = requests.get(ALERTS_URL)
         alerts_data = []
         for alert_dict in rq.json():
             alert = {
@@ -60,7 +58,7 @@ def fetch_alerts(event):
                 "toTime": format_date(alert_dict["ToTime"]),
             }
             alerts_data.append(alert)
-        twitter_api.tweet(alerts_data)
+
     except:
         print(traceback.format_exc())
     threading.Timer(ONE_MIN_IN_SEC, fetch_alerts, [event]).start()

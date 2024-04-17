@@ -51,7 +51,7 @@ if __name__ == "__main__":
     fetch_stops(stops_event)
     fetch_vehicles(vehicles_event)
     time.sleep(1)
-    app.run(host="0.0.0.0", port=5000)
+    app.run(host="0.0.0.0", port=8000)
 elif __name__ == "app":
     alerts_event, gtfs_event, rtf_event, stops_event, vehicles_event = [threading.Event() for i in range(5)]
     fetch_alerts(alerts_event)

@@ -29,6 +29,7 @@ def fetch_access_token():
         expires_in = res.get("expires_in")
         expiration_date = datetime.now() + timedelta(0, expires_in)
     except:
+
         print(traceback.format_exc())
 
 
