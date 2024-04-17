@@ -61,7 +61,6 @@ def fetch_alerts(event):
 
     except:
         print(traceback.format_exc())
-        print('here 2')
     threading.Timer(ONE_MIN_IN_SEC, fetch_alerts, [event]).start()
 
 
