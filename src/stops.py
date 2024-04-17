@@ -16,7 +16,7 @@ COLLEGETOWN_STOP = {  # Creating "fake" bus stop to remove Google Places central
 }
 MIN_DIST_BETWEEN_STOPS = 160.0  # Measured in meters
 ONE_HOUR_IN_SEC = 60 * 60
-STOPS_URL = "https://gateway.api.cloud.wso2.com:443/t/mystop/tcat/v1/rest/Stops/GetAllStops"
+STOPS_URL = "https://realtimetcatbus.availtec.com/InfoPoint/rest/Stops/GetAllStops"
 
 stops_data = None
 
@@ -24,9 +24,7 @@ stops_data = None
 def fetch_stops(event):
     global stops_data
     try:
-        auth_header = fetch_auth_header()
-        headers = {"Cache-Control": "no-cache", "Authorization": auth_header}
-        rq = requests.get(STOPS_URL, headers=headers)
+        rq = requests.get(STOPS_URL)
         stops = []
         for stop_dict in rq.json():
             stop = {

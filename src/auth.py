@@ -24,11 +24,16 @@ def fetch_access_token():
     global access_token, expiration_date
     try:
         rq = requests.post(TOKEN_URL, headers=headers, data={"grant_type": "client_credentials"})
+        print('here!')
         res = rq.json()
+        print(rq.content)
+        print(res.get("expires_in"))
         access_token = res.get("access_token")
         expires_in = res.get("expires_in")
         expiration_date = datetime.now() + timedelta(0, expires_in)
     except:
+        print('here!')
+        print(requests.post(TOKEN_URL, headers=headers, data={"grant_type": "client_credentials"}).headers.get('content-type'))
         print(traceback.format_exc())
 
 
