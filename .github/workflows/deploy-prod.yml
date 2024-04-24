@@ -2,7 +2,7 @@ name: Docker Build & Push and Deploy to transit-prod
 
 on:
   push:
-    branches: [release]
+    branches: [prod]
 
 jobs:
   build-deploy:
@@ -19,7 +19,7 @@ jobs:
           password: ${{ secrets.DOCKER_PASSWORD }}
       - name: Get SHA
         id: vars
-        run: echo "::set-output name=sha_short::$(git rev-parse --short HEAD)"
+        run: echo "::set-output name=sha_short::$(git rev-parse --short prod)"
       - name: Remote SSH and Deploy
         uses: appleboy/ssh-action@master
         env:
