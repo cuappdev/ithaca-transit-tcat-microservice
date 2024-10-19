@@ -82,7 +82,7 @@ def start_notif_timer():
     threading.Timer(30, send_notifs).start()
 
 def send_notif(data):
-    url = 'http://127.0.0.1:3000/api/v1/microserviceNotif'
+    url = 'http://transit-testflight.cornellappdev.com:3000/api/v1/microserviceNotif'
     headers = { 'Content-Type': 'application/json' }
     response = requests.post(url, json=data, headers=headers)
 
