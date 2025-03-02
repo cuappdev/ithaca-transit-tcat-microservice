@@ -50,7 +50,6 @@ def fetch_rtf(event):
 #will need to be sent a notification if this tripID is deemed as delayed
 def add_delay(trip,stop,deviceToken):
     global notif_requests
-    # notif_requests = fetch_requests()
     if trip in notif_requests:
         if stop in notif_requests:
             notif_requests[trip][stop].append(deviceToken)
@@ -64,7 +63,6 @@ def add_delay(trip,stop,deviceToken):
 
 def delete_delay(trip,stop,deviceToken):
     global notif_requests
-    # notif_requests = fetch_requests()
     if trip in notif_requests:
         if stop in notif_requests[trip]:
             notif_requests[trip][stop].remove(deviceToken)
@@ -93,11 +91,6 @@ def send_notifs():
 def save_notifs(notif_requests):
     with open(json_file_path, "w") as outfile:
         outfile.write(json.dumps(notif_requests))
-
-# def start_notif_timer():
-#     #this isn't running
-#     pass
-#     #threading.Timer(10, send_notifs).start()
 
 def send_notif(data):
     url = 'http://transit-testflight.cornellappdev.com/microserviceNotif'
