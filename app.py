@@ -5,7 +5,7 @@ from flask import Flask, jsonify, request
 
 from src.alerts import fetch_alerts, get_alerts_data
 from src.gtfs import fetch_gtfs, get_gtfs_data, get_gtfs_feed_info
-from src.live_tracking import fetch_rtf, get_rtf_data, add_delay,start_notif_timer,send_notifs,delete_delay
+from src.live_tracking import fetch_rtf, get_rtf_data, add_delay,send_notifs,delete_delay
 from src.stops import fetch_stops, get_stops_data
 from src.vehicles import fetch_vehicles, get_vehicles_data
 
@@ -45,7 +45,7 @@ def get_vehicles():
 
 @app.route("/delayNotifs/", methods=["POST"])
 def get_delayNotifs():
-    send_notifs()
+    # send_notifs()
     body = json.loads(request.data)
     trip = body.get("tripId")
     deviceToken = body.get("deviceToken")
@@ -76,7 +76,7 @@ if __name__ == "__main__":
     fetch_stops(stops_event)
     fetch_vehicles(vehicles_event)
     # start_notif_timer()
-    # send_notifs()
+    send_notifs()
     time.sleep(1)
     app.run(host="0.0.0.0", port=5000)
 elif __name__ == "app":
@@ -87,4 +87,4 @@ elif __name__ == "app":
     fetch_stops(stops_event)
     fetch_vehicles(vehicles_event)
     # start_notif_timer()
-    # send_notifs()
+    send_notifs()

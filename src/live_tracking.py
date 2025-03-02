@@ -94,10 +94,10 @@ def save_notifs(notif_requests):
     with open(json_file_path, "w") as outfile:
         outfile.write(json.dumps(notif_requests))
 
-def start_notif_timer():
-    #this isn't running
-    pass
-    #threading.Timer(10, send_notifs).start()
+# def start_notif_timer():
+#     #this isn't running
+#     pass
+#     #threading.Timer(10, send_notifs).start()
 
 def send_notif(data):
     url = 'http://transit-testflight.cornellappdev.com/microserviceNotif'
