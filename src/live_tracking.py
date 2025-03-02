@@ -48,15 +48,26 @@ def fetch_rtf(event):
 
 #adds a deviceToken to a tripID in notifs_request to indicate that this device
 #will need to be sent a notification if this tripID is deemed as delayed
-def add_delay(trip,deviceToken):
+def add_delay(trip,stop,deviceToken):
     global notif_requests
-    # notif_requests = fetch_requests()
     if trip in notif_requests:
-        notif_requests[trip].append(deviceToken)
+        if stop in notif_requests:
+            notif_requests[trip][stop].append(deviceToken)
+        else:
+            notif_requests[trip][stop] = [deviceToken]
     else:
-        notif_requests[trip] = [deviceToken]
+        notif_requests[trip] = {}
+        notif_requests[trip][stop] = [deviceToken]
 
     save_notifs(notif_requests)
+
+def delete_delay(trip,stop,deviceToken):
+    global notif_requests
+    if trip in notif_requests:
+        if stop in notif_requests[trip]:
+            notif_requests[trip][stop].remove(deviceToken)
+    save_notifs(notif_requests)
+     
     
     
 #iterates through ths tripIds in the rtf_data to see if any of the delayed
@@ -65,24 +76,24 @@ def send_notifs():
     global notif_requests
     for id in rtf_data:
         if id in notif_requests:
-            for user in notif_requests[id]:
-                #sends a notification to a device if it is waiting for a delay
-                #notification
-                send_notif({'deviceToken':user, 'routeID':rtf_data[id]['routeId']})
-            #deletes this tripId from notif_requests as it is no longer needed
-            del notif_requests[id]
+            for stop in notif_requests[id]:
+                if stop in rtf_data[id]['stopUpdates']:
+                    for user in notif_requests[id][stop]:
+                        #sends a notification to a device if it is waiting for a delay
+                        #notification
+                        send_notif({'deviceToken':user, 'routeID':rtf_data[id]['routeId']})
+                    #deletes this tripId from notif_requests as it is no longer needed
+                    del notif_requests[id]
             
     save_notifs(notif_requests)
+    threading.Timer(30, send_notifs).start()
  
 def save_notifs(notif_requests):
     with open(json_file_path, "w") as outfile:
         outfile.write(json.dumps(notif_requests))
 
-def start_notif_timer():
-    threading.Timer(30, send_notifs).start()
-
 def send_notif(data):
-    url = 'http://transit-testflight.cornellappdev.com:3000/api/v1/microserviceNotif'
+    url = 'http://transit-testflight.cornellappdev.com/microserviceNotif'
     headers = { 'Content-Type': 'application/json' }
     response = requests.post(url, json=data, headers=headers)
 

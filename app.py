@@ -5,7 +5,7 @@ from flask import Flask, jsonify, request
 
 from src.alerts import fetch_alerts, get_alerts_data
 from src.gtfs import fetch_gtfs, get_gtfs_data, get_gtfs_feed_info
-from src.live_tracking import fetch_rtf, get_rtf_data, add_delay,start_notif_timer
+from src.live_tracking import fetch_rtf, get_rtf_data, add_delay,send_notifs,delete_delay
 from src.stops import fetch_stops, get_stops_data
 from src.vehicles import fetch_vehicles, get_vehicles_data
 
@@ -26,7 +26,6 @@ def get_gtfs():
 @app.route("/")
 @app.route("/rtf")
 def get_rtf():
-    print('bye2')
     return jsonify(get_rtf_data())
 
 
@@ -46,15 +45,23 @@ def get_vehicles():
 
 @app.route("/delayNotifs/", methods=["POST"])
 def get_delayNotifs():
-    #notif_requests = {'t65B-b1F42-slC':'hi'}
     body = json.loads(request.data)
     trip = body.get("tripId")
-    print(body)
     deviceToken = body.get("deviceToken")
+    stop = body.get("stopId")
 
-    add_delay(trip,deviceToken)
+    add_delay(trip,stop,deviceToken)
     return jsonify({"success":True})
   
+@app.route("/deleteDelayNotifs/", methods=["POST"])
+def get_deleteDelayNotifs():
+    body = json.loads(request.data)
+    trip = body.get("tripId")
+    deviceToken = body.get("deviceToken")
+    stop = body.get("stopId")
+
+    delete_delay(trip,stop,deviceToken)
+    return jsonify({"success":True})
 
 
 
@@ -65,9 +72,9 @@ if __name__ == "__main__":
     fetch_rtf(rtf_event)
     fetch_stops(stops_event)
     fetch_vehicles(vehicles_event)
-    start_notif_timer()
+    send_notifs()
     time.sleep(1)
-    app.run(host="0.0.0.0", port=8000)
+    app.run(host="0.0.0.0", port=5000)
 elif __name__ == "app":
     alerts_event, gtfs_event, rtf_event, stops_event, vehicles_event = [threading.Event() for i in range(5)]
     fetch_alerts(alerts_event)
@@ -75,4 +82,4 @@ elif __name__ == "app":
     fetch_rtf(rtf_event)
     fetch_stops(stops_event)
     fetch_vehicles(vehicles_event)
-    start_notif_timer()
+    send_notifs()
