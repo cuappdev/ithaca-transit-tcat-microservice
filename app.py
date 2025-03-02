@@ -45,11 +45,9 @@ def get_vehicles():
 
 @app.route("/delayNotifs/", methods=["POST"])
 def get_delayNotifs():
-    #notif_requests = {'t65B-b1F42-slC':'hi'}
     send_notifs()
     body = json.loads(request.data)
     trip = body.get("tripId")
-    print(body)
     deviceToken = body.get("deviceToken")
     stop = body.get("stopId")
 
@@ -62,7 +60,6 @@ def get_deleteDelayNotifs():
 
     body = json.loads(request.data)
     trip = body.get("tripId")
-    print(body)
     deviceToken = body.get("deviceToken")
     stop = body.get("stopId")
 
