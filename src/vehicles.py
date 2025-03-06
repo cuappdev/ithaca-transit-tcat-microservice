@@ -1,7 +1,7 @@
 import threading
 import traceback
 
-import gtfs_realtime_pb2
+import gtfs.gtfs_realtime_pb2 as gtfs
 import urllib.request
 
 VEHICLES_URL = "https://realtimetcatbus.availtec.com/InfoPoint/GTFS-Realtime.ashx?&Type=VehiclePosition&serverid=0"
@@ -11,7 +11,7 @@ vehicles_data = None
 
 def parse_protobuf(rq):
     entity_dict = {}
-    feed = gtfs_realtime_pb2.FeedMessage()
+    feed = gtfs.FeedMessage()
     feed.ParseFromString(rq.read())
     for entity in feed.entity:
         vehicle_id = entity.id

@@ -1,18 +1,16 @@
 from datetime import datetime
 import threading
 import traceback
-
 import requests
 
-from src.auth import fetch_auth_header
 
-
-ALERTS_URL = "https://realtimetcatbus.availtec.com/InfoPoint/rest/PublicMessages/GetAllMessages"
+ALERTS_URL = (
+    "https://realtimetcatbus.availtec.com/InfoPoint/rest/PublicMessages/GetAllMessages"
+)
 DATE_STRING_FORMAT = "%Y-%m-%dT%H:%M:%S.%fZ"
 ONE_MIN_IN_SEC = 60
 
 alerts_data = None
-
 
 
 def format_date(date_str):

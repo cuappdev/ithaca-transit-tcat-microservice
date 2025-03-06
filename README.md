@@ -28,25 +28,15 @@ To run the app, just do:
 python app.py
 ```
 
-# Style
-
-So that the repository agrees upon a style standard, we have opted to use [black](https://github.com/psf/black) for Python formatting!
-
-## Setting up linter
-
-**Flake 8**: Install [flake8](http://flake8.pycqa.org/en/latest/)
-
-**Black**: Either use [command line tool](https://black.readthedocs.io/en/stable/installation_and_usage.html) or use [editor extension](https://black.readthedocs.io/en/stable/editor_integration.html).
-
-If using VS Code, install the 'Python' extension and include following snippet inside `settings.json`:
-
-```json
-"python.linting.pylintEnabled": false,
-"python.linting.flake8Enabled": true,
-"python.formatting.provider": "black"
-```
-
 # Endpoints
+
+# **/rtf** • GET
+
+**Description:** Fetches the XML realtime feed data from TCAT and parses it into JSON.
+
+## Returns: JSON object representing the realtime feed data from TCAT
+
+---
 
 # **/alerts** • GET
 
@@ -88,14 +78,6 @@ _class_ **RouteInfo**
 | route_long_name  | String   |
 | route_short_name | String   |
 | route_type       | String   |
-
----
-
-# **/rtf** • GET
-
-**Description:** Fetches the XML realtime feed data from TCAT and parses it into JSON.
-
-## Returns: JSON object representing the realtime feed data from TCAT
 
 ---
 

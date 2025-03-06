@@ -2,14 +2,16 @@ import threading
 import traceback
 import os
 import json
-import gtfs_realtime_pb2
+import gtfs.gtfs_realtime_pb2 as gtfs
 import urllib.request
 import ssl
 import certifi
 
 import requests
 
-RTF_URL = "https://realtimetcatbus.availtec.com/InfoPoint/GTFS-Realtime.ashx?&Type=TripUpdate"
+RTF_URL = (
+    "https://realtimetcatbus.availtec.com/InfoPoint/GTFS-Realtime.ashx?&Type=TripUpdate"
+)
 
 rtf_data = None
 notif_requests = {}
@@ -22,7 +24,7 @@ notif_requests = json.load(f)
 
 def parse_protobuf(rq):
     entity_dict = {}
-    feed = gtfs_realtime_pb2.FeedMessage()
+    feed = gtfs.FeedMessage()
     feed.ParseFromString(rq.read())
     vehicle_id = None
     for entity in feed.entity:
@@ -36,7 +38,11 @@ def parse_protobuf(rq):
                     continue
                 stop_id = stop_update.stop_id
                 stop_updates[stop_id] = stop_update.arrival.delay
-        entity_dict[entity.id] = {"routeId": route_id, "stopUpdates": stop_updates, "vehicleId": vehicle_id}
+        entity_dict[entity.id] = {
+            "routeId": route_id,
+            "stopUpdates": stop_updates,
+            "vehicleId": vehicle_id,
+        }
     return entity_dict
 
 
@@ -86,7 +92,9 @@ def send_notifs():
                     for user in notif_requests[id][stop]:
                         # sends a notification to a device if it is waiting for a delay
                         # notification
-                        send_notif({"deviceToken": user, "routeID": rtf_data[id]["routeId"]})
+                        send_notif(
+                            {"deviceToken": user, "routeID": rtf_data[id]["routeId"]}
+                        )
                     # deletes this tripId from notif_requests as it is no longer needed
                     del notif_requests[id]
 
