@@ -1,5 +1,4 @@
 import threading
-import time
 import json
 from flask import Flask, jsonify, request
 from src.alerts import fetch_alerts, get_alerts_data
@@ -68,25 +67,18 @@ def get_deleteDelayNotifs():
     return jsonify({"success": True})
 
 
+def setup_events():
+    alerts_event, gtfs_event, rtf_event, stops_event, vehicles_event = [
+        threading.Event() for _ in range(5)
+    ]
+    fetch_alerts(alerts_event)
+    fetch_gtfs(gtfs_event)
+    fetch_rtf(rtf_event)
+    fetch_stops(stops_event)
+    fetch_vehicles(vehicles_event)
+    send_notifs()
+
+
+setup_events()
 if __name__ == "__main__":
-    alerts_event, gtfs_event, rtf_event, stops_event, vehicles_event = [
-        threading.Event() for _ in range(5)
-    ]
-    fetch_alerts(alerts_event)
-    fetch_gtfs(gtfs_event)
-    fetch_rtf(rtf_event)
-    fetch_stops(stops_event)
-    fetch_vehicles(vehicles_event)
-    send_notifs()
-    time.sleep(1)
     app.run(host="0.0.0.0", port=8000)
-elif __name__ == "app":
-    alerts_event, gtfs_event, rtf_event, stops_event, vehicles_event = [
-        threading.Event() for _ in range(5)
-    ]
-    fetch_alerts(alerts_event)
-    fetch_gtfs(gtfs_event)
-    fetch_rtf(rtf_event)
-    fetch_stops(stops_event)
-    fetch_vehicles(vehicles_event)
-    send_notifs()

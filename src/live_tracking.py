@@ -110,7 +110,7 @@ def save_notifs(notif_requests):
 def send_notif(data):
     url = "http://transit-testflight.cornellappdev.com/microserviceNotif"
     headers = {"Content-Type": "application/json"}
-    response = requests.post(url, json=data, headers=headers)
+    requests.post(url, json=data, headers=headers)
 
 
 def get_rtf_data():
