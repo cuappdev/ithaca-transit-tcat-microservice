@@ -7,4 +7,4 @@ COPY . .
 
 RUN pip install -r requirements.txt
 
-CMD gunicorn -w 1 -t 60 -b 0.0.0.0:5000 app:app
+CMD gunicorn -w 1 -t 60 -b 0.0.0.0:8000 app:app
