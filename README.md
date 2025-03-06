@@ -1,11 +1,12 @@
 # ithaca-transit-live-tracking
+
 Microservice for Ithaca Transit that handles:
 
-  * Alerts
-  * Bus Stops
-  * Fetching GTFS data
-  * Live tracking
-  * Posting tweets on Twitter
+- Alerts
+- Bus Stops
+- Fetching GTFS data
+- Live tracking
+- Posting tweets on Twitter
 
 Note that this microservice is only accessed by `ithaca-transit-backend` and is not a public API.
 
@@ -19,13 +20,6 @@ source venv/bin/activate
 pip install -r requirements.txt
 ```
 
-Make sure to also create your `.envrc` file by running:
-```
-cp envrc.template .envrc
-```
-
-Environment variable values can be found by asking a member of Cornell AppDev.
-
 # Run
 
 To run the app, just do:
@@ -33,22 +27,16 @@ To run the app, just do:
 ```
 python app.py
 ```
-# Style
-So that the repository agrees upon a style standard, we have opted to use [black](https://github.com/psf/black) for Python formatting!
-
-## Setting up linter
-**Flake 8**: Install [flake8](http://flake8.pycqa.org/en/latest/)
-
-**Black**: Either use [command line tool](https://black.readthedocs.io/en/stable/installation_and_usage.html) or use [editor extension](https://black.readthedocs.io/en/stable/editor_integration.html). 
-
-If using VS Code, install the 'Python' extension and include following snippet inside `settings.json`:
-```  json
-"python.linting.pylintEnabled": false,
-"python.linting.flake8Enabled": true,
-"python.formatting.provider": "black"
- ```
 
 # Endpoints
+
+# **/rtf** • GET
+
+**Description:** Fetches the XML realtime feed data from TCAT and parses it into JSON.
+
+## Returns: JSON object representing the realtime feed data from TCAT
+
+---
 
 # **/alerts** • GET
 
@@ -57,46 +45,42 @@ The date, time, and daysOfWeek fields can specify an alert that takes place for 
 
 ## Returns: [Alert]
 
-*class* Alert
+_class_ Alert
 
-| **Name**        | **Type**                                       | **Description**                                                                                                                                                                                 |
-| --------------- | ---------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| id              | Int                                            | The ID number of the alert.                                                                                                                                                                     |
-| message         | String                                         | The message of the alert.                                                                                                                                                                       |
-| fromDate        | String                                         | The first date that the alert begins taking effect.  UTC-formatted date string (e.g. “2018-04-10T04:00:00.000Z”)                                                                                |
-| toDate          | String                                         | The last date that the alert begins taking effect.  UTC-formatted date string (e.g. “2018-04-10T04:00:00.000Z”)                                                                                 |
-| fromTime        | String                                         | The start time during the date range that the alert is in effect.  UTC-formatted date string (e.g. “2018-04-10T04:00:00.000Z”)                                                                  |
-| toTime          | String                                         | The start time during the date range that the alert is in effect.  UTC-formatted date string (e.g. “2018-04-10T04:00:00.000Z”)                                                                  |
-| priority        | Int                                            | Priority of the alert, from 0 (highest) to 3 (lowest).  Potential Return Values: [0, 1, 2, 3]                                                                                                   |
-| daysOfWeek      | String                                         | A String enum representing a day of the week:   Potential Return Values: ["Every day”, “Weekend”, “Weekdays”, “Monday”, “Tuesday”, “Wednesday”, “Thursday”, “Friday”, “Saturday”, “Sunday”, “”] |
-| routes          | [Int]                                          | A list of route numbers affected by alert.                                                                                                                                                      |
-| signs           | [Int]                                          | A list of ??? affected by the alert.                                                                                                                                                            |
-| channelMessages | [{  ChannelId: Int? Message: String?  }]       | A list of ChannelMessage objects. Improve description.                                                                                                                                          |
-----------
+| **Name**        | **Type**                               | **Description**                                                                                                                                                                               |
+| --------------- | -------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| id              | Int                                    | The ID number of the alert.                                                                                                                                                                   |
+| message         | String                                 | The message of the alert.                                                                                                                                                                     |
+| fromDate        | String                                 | The first date that the alert begins taking effect. UTC-formatted date string (e.g. “2018-04-10T04:00:00.000Z”)                                                                               |
+| toDate          | String                                 | The last date that the alert begins taking effect. UTC-formatted date string (e.g. “2018-04-10T04:00:00.000Z”)                                                                                |
+| fromTime        | String                                 | The start time during the date range that the alert is in effect. UTC-formatted date string (e.g. “2018-04-10T04:00:00.000Z”)                                                                 |
+| toTime          | String                                 | The start time during the date range that the alert is in effect. UTC-formatted date string (e.g. “2018-04-10T04:00:00.000Z”)                                                                 |
+| priority        | Int                                    | Priority of the alert, from 0 (highest) to 3 (lowest). Potential Return Values: [0, 1, 2, 3]                                                                                                  |
+| daysOfWeek      | String                                 | A String enum representing a day of the week: Potential Return Values: ["Every day”, “Weekend”, “Weekdays”, “Monday”, “Tuesday”, “Wednesday”, “Thursday”, “Friday”, “Saturday”, “Sunday”, “”] |
+| routes          | [Int]                                  | A list of route numbers affected by alert.                                                                                                                                                    |
+| signs           | [Int]                                  | A list of ??? affected by the alert.                                                                                                                                                          |
+| channelMessages | [{ ChannelId: Int? Message: String? }] | A list of ChannelMessage objects. Improve description.                                                                                                                                        |
+
+---
+
 # **/gtfs** • GET
 
 **Description:** Fetches the GTFS data from TCAT about routes.
 
 ## Returns: [RouteInfo]
 
-*class* **RouteInfo**
+_class_ **RouteInfo**
 
 | **Name**         | **Type** |
-| --------         | -------- |
+| ---------------- | -------- |
 | agency_id        | String   |
-| route_id         | String   | 
+| route_id         | String   |
 | route_long_name  | String   |
 | route_short_name | String   |
 | route_type       | String   |
 
-----------
-# **/rtf** • GET
+---
 
-**Description:** Fetches the XML realtime feed data from TCAT and parses it into JSON.
-
-## Returns: JSON object representing the realtime feed data from TCAT
-
-----------
 # **/stops** • GET
 
 **Description:** Return a list of TCAT bus stops to show as a possible start / end location. A list should be included in the app, and periodically updated every so often.
@@ -105,7 +89,7 @@ The date, time, and daysOfWeek fields can specify an alert that takes place for 
 
 ## Returns: [BusStop]
 
-*class* **BusStop**
+_class_ **BusStop**
 
 | **Name** | **Type** | **Description**                           |
 | -------- | -------- | ----------------------------------------- |
@@ -113,4 +97,3 @@ The date, time, and daysOfWeek fields can specify an alert that takes place for 
 | lat      | Double   | The latitude coordinate of the bus stop.  |
 | long     | Double   | The longitude coordinate of the bus stop. |
 | type     | String   | This is just the string "busStop".        |
-

@@ -20,10 +20,15 @@ def is_access_token_expired():
 
 def fetch_access_token():
     basic_token = os.environ["TOKEN"]
-    headers = {"Cache-Control": "no-cache", "Authorization": "Basic {}".format(basic_token)}
+    headers = {
+        "Cache-Control": "no-cache",
+        "Authorization": "Basic {}".format(basic_token),
+    }
     global access_token, expiration_date
     try:
-        rq = requests.post(TOKEN_URL, headers=headers, data={"grant_type": "client_credentials"})
+        rq = requests.post(
+            TOKEN_URL, headers=headers, data={"grant_type": "client_credentials"}
+        )
         res = rq.json()
         access_token = res.get("access_token")
         expires_in = res.get("expires_in")

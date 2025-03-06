@@ -1,24 +1,22 @@
-from datetime import datetime
+from datetime import datetime, timezone
 import threading
 import traceback
-
 import requests
 
-from src.auth import fetch_auth_header
 
-
-ALERTS_URL = "https://realtimetcatbus.availtec.com/InfoPoint/rest/PublicMessages/GetAllMessages"
+ALERTS_URL = (
+    "https://realtimetcatbus.availtec.com/InfoPoint/rest/PublicMessages/GetAllMessages"
+)
 DATE_STRING_FORMAT = "%Y-%m-%dT%H:%M:%S.%fZ"
 ONE_MIN_IN_SEC = 60
 
 alerts_data = None
 
 
-
 def format_date(date_str):
     # ex) date_str is "/Date(1547528400000-0500)/"
     timestamp = int(date_str[6 : date_str.index("-")]) / 1000.0
-    utc_date = datetime.utcfromtimestamp(timestamp)
+    utc_date = datetime.fromtimestamp(timestamp, tz=timezone.utc)
     return utc_date.strftime(DATE_STRING_FORMAT)
 
 
