@@ -2,7 +2,7 @@ name: Build & Push to DockerHub
 
 on:
   push:
-    branches: [autodeploy]
+    branches: [master]
 
 jobs:
   build-deploy:
