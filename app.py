@@ -1,16 +1,7 @@
 import threading
-
-
-
-
-
-
-
-
 import time
 import json
 from flask import Flask, jsonify, request
-
 from src.alerts import fetch_alerts, get_alerts_data
 from src.gtfs import fetch_gtfs, get_gtfs_data, get_gtfs_feed_info
 from src.live_tracking import (
@@ -30,15 +21,6 @@ app = Flask(__name__)
 @app.route("/rtf")
 def get_rtf():
     return jsonify(get_rtf_data())
-
-
-
-
-
-
-
-
-
 
 
 @app.route("/alerts")
