@@ -22,6 +22,17 @@ app = Flask(__name__)
 @app.route("/rtf")
 def get_rtf():
     return jsonify(get_rtf_data())
+
+
+
+
+
+
+
+
+
+
+
 @app.route("/alerts")
 def get_alerts():
     return jsonify(get_alerts_data())
